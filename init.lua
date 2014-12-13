@@ -11,7 +11,7 @@ for i = 1,9 do
 		drawtype = "nodebox",
 		tiles = {"default_cobble.png"},
 		paramtype = "light",
-		groups = {cracky=3,oddly_breakable_by_hand=3},
+		groups = {cracky=3, stone=2},
 		sounds = default.node_sound_stone_defaults(),
 		visual_scale = scale,
 		wield_scale = scale,
