@@ -14,7 +14,7 @@ for i = 1,9 do
 		groups = {cracky=3, stone=2},
 		sounds = default.node_sound_stone_defaults(),
 		visual_scale = scale,
-		wield_scale = scale,
+		wield_scale = {x=scale, y=scale, z=scale},
 		node_box = {
 			type = "fixed",
 			fixed = {
