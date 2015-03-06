@@ -1,6 +1,6 @@
 local technic_available = rawget(_G, "technic") and true
 
-for i = 1,9 do
+for i = 1,6 do
 	local scale = 3^i
 	local amount = scale^3
 	local ns = scale/2
@@ -39,10 +39,11 @@ for i = 1,9 do
 		local input_i = i-1
 		local input
 		if input_i == 0 then
-			input = "default:cobble"
+			input = "default:cobble 27"
 		else
-			input = "compressed_cobble:cobble_"..input_i
+			input = "compressed_cobble:cobble_"..input_i.." 27"
 		end
 		technic.register_compressor_recipe({input = {input}, output = name})
+		minetest.register_craft({output = input, recipe = {{name}}})
 	end
 end
