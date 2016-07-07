@@ -1,18 +1,29 @@
-local technic_available = rawget(_G, "technic") and true
+local load_time_start = minetest.get_us_time()
+
+
+local technic_available = minetest.global_exists"technic"
+
+local def = minetest.registered_nodes["default:cobble"]
+local box = {
+	type = "fixed",
+	fixed = {
+		{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+	},
+}
 
 for i = 1,6 do
 	local scale = 3^i
 	local amount = scale^3
-	local ns = scale/2
+	local ns = scale*.5
 	scale = 1/scale
 	local name = "compressed_cobble:cobble_"..i
 	minetest.register_node(name, {
 		description = amount.." compressed cobble",
 		drawtype = "nodebox",
-		tiles = {"default_cobble.png"},
+		tiles = def.tiles,
 		paramtype = "light",
-		groups = {cracky=3, stone=2},
-		sounds = default.node_sound_stone_defaults(),
+		groups = def.groups,
+		sounds = def.sounds,
 		visual_scale = scale,
 		wield_scale = {x=scale, y=scale, z=scale},
 		node_box = {
@@ -21,18 +32,8 @@ for i = 1,6 do
 				{-ns, -ns, -ns, ns, ns, ns},
 			},
 		},
-		selection_box = {
-			type = "fixed",
-			fixed = {
-				{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
-			},
-		},
-		collision_box = {
-			type = "fixed",
-			fixed = {
-				{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
-			},
-		},
+		selection_box = box,
+		collision_box = box,
 	})
 
 	if technic_available then
@@ -43,7 +44,16 @@ for i = 1,6 do
 		else
 			input = "compressed_cobble:cobble_"..input_i.." 27"
 		end
-		technic.register_compressor_recipe({input = {input}, output = name})
-		minetest.register_craft({output = input, recipe = {{name}}})
+		technic.register_compressor_recipe{input = {input}, output = name}
+		minetest.register_craft{output = input, recipe = {{name}}}
 	end
+end
+
+
+local time = (minetest.get_us_time() - load_time_start) / 1000000
+local msg = "[compressed_cobble] loaded after ca. " .. time .. " seconds."
+if time > 0.01 then
+	print(msg)
+else
+	minetest.log("info", msg)
 end
